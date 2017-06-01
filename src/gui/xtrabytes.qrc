@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="dashboard">resources/icons/dashboard.png</file>
+        <file alias="about">resources/icons/about.png</file>
+        <file alias="exit">resources/icons/exit.png</file>
+        <file alias="xtrabytes">resources/icons/xtrabytes.png</file>
+        <file alias="xtrabytesicon">resources/icons/xtrabytes.ico</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file alias="about">resources/images/xtrabytes.png</file>
+        <file alias="menuimage">resources/images/menuimage.png</file>
+    </qresource>
+    <qresource prefix="/translations">
+        <file alias="hu">locale/xtrabytes_hu.ts</file>
+    </qresource>
+</RCC>
