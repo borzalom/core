@@ -21,7 +21,7 @@ QT += core gui widgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 lessThan(QT_MAJOR_VERSION, 5): CONFIG += static
 
-SOURCES +=   src/gui/xtrabytes.cpp \
+SOURCES +=   src/xtrabytes.cpp \
 	     src/gui/xtrabytesgui.cpp \
 	     src/gui/aboutdialog.cpp \
 	     src/gui/overviewpage.cpp
@@ -61,5 +61,7 @@ isEmpty(QMAKE_LRELEASE) {
     win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
     else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
 }
+
+LIBS += -lboost_system
 
 system($$QMAKE_LRELEASE -silent $$_PRO_FILE_)

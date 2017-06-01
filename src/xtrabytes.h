@@ -6,5 +6,6 @@
 #ifndef XBY_XTRABYTES_H
 #define XBY_XTRABYTES_H
 
+void ParseCommandLineSettings(int argc, const char* const argv[]);
 
 #endif // XBY_XTRABYTES_H
