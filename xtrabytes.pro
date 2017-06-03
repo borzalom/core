@@ -7,6 +7,8 @@ TEMPLATE = app
 TARGET = xtrabytes
 INCLUDEPATH += src src/gui
 
+CONFIG += console
+
 HEADERS  += src/version.h
 
 DEFINES +=  "VERSION_MAJOR=$$XTRABYTES_VERSION_MAJOR"\
@@ -24,7 +26,11 @@ lessThan(QT_MAJOR_VERSION, 5): CONFIG += static
 SOURCES +=   src/xtrabytes.cpp \
 	     src/gui/xtrabytesgui.cpp \
 	     src/gui/aboutdialog.cpp \
-	     src/gui/overviewpage.cpp
+	     src/gui/overviewpage.cpp \
+	     src/util.cpp \
+	     src/genesis.cpp \
+	     src/superchain.cpp \
+	     src/block.cpp
 
 HEADERS +=   src/gui/xtrabytesgui.h \
 	     src/gui/aboutdialog.h \
@@ -62,6 +68,6 @@ isEmpty(QMAKE_LRELEASE) {
     else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
 }
 
-LIBS += -lboost_system
+LIBS += -lboost_system$$BOOST_LIB_SUFFIX
 
 system($$QMAKE_LRELEASE -silent $$_PRO_FILE_)

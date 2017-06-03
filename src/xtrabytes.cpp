@@ -6,12 +6,17 @@
 #include <QApplication>
 #include <QPushButton>
 
+#include <boost/algorithm/string.hpp>    
 #include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
+#include <boost/foreach.hpp>
 
 #include "xtrabytes.h"
+#include "genesis.h"
 #include "gui/xtrabytesgui.h"
 
+using namespace std;
+using namespace boost;
   
 boost::mutex SettingsMutex;
 std::map<std::string, std::vector<std::string> > SettingsMap;    
@@ -19,13 +24,28 @@ std::map<std::string, std::vector<std::string> > SettingsMap;
 int main(int argc, char **argv)
 {
     
-  ParseCommandLineSettings( argc , argv );  
+  ParseCommandLine( argc , argv );  
 
   if ( SettingsMap["nogui"].size() > 0 || SettingsMap["help"].size() > 0 ) {
     std::cout << std::endl << "Welcome to XtraBYtes command line mode." << std::endl;
+
     if ( SettingsMap["help"].size() > 0 ) {
-       std::cout << std::endl << "FIXMEE! Display command line help..." << std::endl;
+       std::cout << std::endl << "Commands:" << std::endl;
+       std::cout << "help" << std::endl;
+       std::cout << "getstaticbyid" << std::endl;
+       std::cout << "getstaticbypubkey" << std::endl << std::endl;
     }
+    
+    if ( GetSettingsStringValue("getstaticbyid").size() > 0 ) {
+    	  
+        std::cout << std::endl << Genesis_Block::GetSTaTiCbyID(GetSettingsStringValue("getstaticbyid").c_str()) << std::endl;
+    }
+
+    if ( GetSettingsStringValue("getstaticbypubkey").size() > 0 ) {
+    	  
+        std::cout << std::endl << Genesis_Block::GetSTaTiCbyPubKey(GetSettingsStringValue("getstaticbypubkey").c_str()) << std::endl;
+    }
+
   } else {
   	
 	  QApplication app (argc, argv);
@@ -39,7 +59,7 @@ int main(int argc, char **argv)
   return 1;  	
 }
 
-void ParseCommandLineSettings(int argc, const char* const argv[])
+void ParseCommandLine(int argc, const char* const argv[])
 {
 
     SettingsMutex.lock();
@@ -75,3 +95,11 @@ void ParseCommandLineSettings(int argc, const char* const argv[])
    SettingsMutex.unlock(); 
 }
 
+// FIXMEE!! TMP FUNCTIONS
+
+std::string GetSettingsStringValue(std::string id ) {
+  BOOST_FOREACH(std::string str, SettingsMap[id]) {
+  	  return str;
+  }	
+  return "";
+}
