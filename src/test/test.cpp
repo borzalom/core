@@ -10,6 +10,9 @@
 #include "../crypto.h"
 #include "../redfat.h"
 
+const char* TestDataBin = "The Proof of Signature Blockchain Revolution";
+const char* TestDataHex = "5468652050726F6F66206F66205369676E617475726520426C6F636B636861696E205265766F6C7574696F6E";
+const char* TestDataBase64 = "VGhlIFByb29mIG9mIFNpZ25hdHVyZSBCbG9ja2NoYWluIFJldm9sdXRpb24=";
 
 
 BOOST_AUTO_TEST_CASE( hexstring_test )
@@ -17,13 +20,22 @@ BOOST_AUTO_TEST_CASE( hexstring_test )
 	 BOOST_TEST_MESSAGE( "Hex string test:" );
 	 HexString hexstring;
 	 BOOST_REQUIRE( hexstring.Wipe() == false );	 
-	 const char* TestDataBin="The Proof of Signature Blockchain Revolution";
-	 const char* TestDataHex="5468652050726F6F66206F66205369676E617475726520426C6F636B636861696E205265766F6C7574696F6E";
     BOOST_REQUIRE( hexstring.Allocate((unsigned)strlen(TestDataBin)) == true );    
     BOOST_REQUIRE( hexstring.SetBin((char*)TestDataBin) == true );
     BOOST_REQUIRE( strcmp(hexstring.toString().c_str(),TestDataHex) == 0 );
     BOOST_REQUIRE( hexstring.Wipe() == true );
     // BOOST_REQUIRE( hexstring.SetHex((char*)TestDataHex) == true );           
+}
+
+BOOST_AUTO_TEST_CASE( encode_decode_tests )
+{
+  
+  Encoders encoders;   
+  Decoders decoders;
+  
+  BOOST_TEST_MESSAGE( "Base64 encode/decode tests:" );
+  BOOST_REQUIRE( strcmp(encoders.Base64_Encode((unsigned char *)TestDataBin, (unsigned)strlen(TestDataBin)).c_str(),TestDataBase64) == 0 );
+  BOOST_REQUIRE( strcmp(decoders.Base64_Decode((char *)TestDataBase64).c_str(),TestDataBin) == 0 );
 }
 
 BOOST_AUTO_TEST_CASE( random_number_test )

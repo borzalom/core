@@ -9,7 +9,8 @@
 #include <string>
 #include <time.h>
 
-extern const char* const HEX;
+extern const char* const HEX_CHARS;
+extern const char* const BASE64_CHARS;
 
 class HexString {
 	
@@ -41,5 +42,22 @@ public:
     unsigned int GetNextRandomNumber();
 
 };
+
+class Encoders {
+	
+public:
+	std::string Base64_Encode(unsigned char const* , unsigned int len);
+
+};
+
+class Decoders {
+
+public:
+	std::string Base64_Decode(std::string const& s);
+
+};
+
+
+
 
 #endif // XBY_UTIL_H
