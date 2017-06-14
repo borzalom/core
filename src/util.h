@@ -6,5 +6,40 @@
 #ifndef XBY_UTIL_H
 #define XBY_UTIL_H
 
+#include <string>
+#include <time.h>
+
+extern const char* const HEX;
+
+class HexString {
+	
+  private:
+  		char *HEXdata;	
+  		int size;
+  		bool IsData;
+  		
+  public:
+  		HexString();
+  		~HexString();
+  		bool Allocate(int Dsize);
+  		bool SetBin(char* data);
+  		bool SetHex(char* data);
+  		bool Wipe();
+  		std::string toString();
+};
+
+class RandomNumber {
+	
+private:
+    unsigned int Index;
+    unsigned int Offset;
+
+    static unsigned int GetPermutation(unsigned int x);
+
+public:
+    RandomNumber();
+    unsigned int GetNextRandomNumber();
+
+};
 
 #endif // XBY_UTIL_H
