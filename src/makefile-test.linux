@@ -15,10 +15,10 @@ LIBS = $(addprefix -L,$(BOOST_LIB_PATH))
 
 LIBS += \
  -Wl,-Bstatic \
-   -l boost_system \
-   -l boost_filesystem \
-   -l boost_program_options \
-   -l boost_thread 
+   -L boost_system \
+   -L boost_filesystem \
+   -L boost_program_options \
+   -L boost_thread 
 
 LIBS+= \
  -Wl,-Bdynamic \
