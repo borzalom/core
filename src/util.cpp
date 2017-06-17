@@ -18,14 +18,11 @@ const char* const BASE64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrst
 
 bool HexString::Allocate(int Dsize) {
 	IsData = false;
-	if (DSize > 0)
-	{
-	size = Dsize;
-	HEXdata = (char *)malloc(Dsize);
+	if (Dsize > 0) {
+	   size = Dsize;
+	   HEXdata = (char *)malloc(Dsize);
    	IsData = (HEXdata != NULL);
-	}
-	else
-	{
+	}	else {
 	size = -1;
 	}
    return IsData; 
