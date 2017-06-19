@@ -6,9 +6,12 @@
 #define BOOST_TEST_MODULE XtraBYtes_Tests
 #include <boost/test/included/unit_test.hpp>
 
+#include <boost/asio.hpp>
+
 #include "../util.h"
 #include "../crypto.h"
 #include "../redfat.h"
+#include "../vitals.h"
 
 const char* TestDataBin = "The Proof of Signature Blockchain Revolution";
 const char* TestDataHex = "5468652050726F6F66206F66205369676E617475726520426C6F636B636861696E205265766F6C7574696F6E";
@@ -89,3 +92,12 @@ BOOST_AUTO_TEST_CASE( redfat_test )
   REDFAT redfat; 
 
 }
+
+BOOST_AUTO_TEST_CASE( xbridge_test )
+{  
+    boost::asio::io_service ios;
+    XBridge xbridge( ios );
+    BOOST_REQUIRE( xbridge.connect( "localhost:34001", "xbyuser", "xbypass" ) == true );    
+    BOOST_TEST_MESSAGE( "Blocks:" << xbridge.GetBlocks() );
+}
+
