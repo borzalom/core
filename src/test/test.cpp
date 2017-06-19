@@ -27,7 +27,28 @@ BOOST_AUTO_TEST_CASE( hexstring_test )
     BOOST_REQUIRE( hexstring.SetBin((char*)TestDataBin) == true );
     BOOST_REQUIRE( strcmp(hexstring.toString().c_str(),TestDataHex) == 0 );
     BOOST_REQUIRE( hexstring.Wipe() == true );
-    // BOOST_REQUIRE( hexstring.SetHex((char*)TestDataHex) == true );           
+    // BOOST_REQUIRE( hexstring.SetHex((char*)TestDataHex) == true );     
+	
+	/**
+	*Test negative size
+	*/
+	
+	BOOST_TEST_MESSAGE("Negative test:");
+	BOOST_REQUIRE ( hexstring.Allocate(-1) == false);
+	
+	/**
+	*Test zero size
+	*/
+	
+	const char* TestBin = "";
+	const char* TestHex = "";
+	BOOST_TEST_MESSAGE("Zero test:");
+	BOOST_REQUIRE( hexstring.Allocate(0) == false);
+	BOOST_REQUIRE( hexstring.SetBin((char*)TestBin) == false);
+	BOOST_REQUIRE( hexstring.SetHex((char*)TestHex) == false);
+	BOOST_REQUIRE( hexstring.Wipe() == false);
+	BOOST_REQUIRE(strcmp(hexstring.toString().c_str(), "HexString is null") == 0);
+	
 }
 
 BOOST_AUTO_TEST_CASE( encode_decode_tests )
