@@ -7,6 +7,8 @@ TEMPLATE = app
 TARGET = xtrabytes
 INCLUDEPATH += src src/gui
 
+CONFIG += console
+
 HEADERS  += src/version.h
 
 DEFINES +=  "VERSION_MAJOR=$$XTRABYTES_VERSION_MAJOR"\
@@ -24,7 +26,14 @@ lessThan(QT_MAJOR_VERSION, 5): CONFIG += static
 SOURCES +=   src/xtrabytes.cpp \
 	     src/gui/xtrabytesgui.cpp \
 	     src/gui/aboutdialog.cpp \
-	     src/gui/overviewpage.cpp
+	     src/gui/overviewpage.cpp \
+	     src/util.cpp \
+	     src/redfat.cpp \
+	     src/crypto.cpp \
+	     src/error.cpp \
+	     src/genesis.cpp \
+	     src/superchain.cpp \
+	     src/block.cpp
 
 HEADERS +=   src/gui/xtrabytesgui.h \
 	     src/gui/aboutdialog.h \
@@ -38,6 +47,28 @@ RESOURCES += src/gui/xtrabytes.qrc
 
 # Dependency library locations can be customized with:
 #    BOOST_INCLUDE_PATH, BOOST_LIB_PATH
+
+
+INCLUDEPATH += src/leveldb/include src/leveldb/helpers
+LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
+
+!win32 {
+    # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
+    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
+} else {
+    # make an educated guess about what the ranlib command is called
+    isEmpty(QMAKE_RANLIB) {
+        QMAKE_RANLIB = $$replace(QMAKE_STRIP, strip, ranlib)
+    }
+    LIBS += -lshlwapi
+    #genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
+}
+genleveldb.target = $$PWD/src/leveldb/libleveldb.a
+genleveldb.depends = FORCE
+PRE_TARGETDEPS += $$PWD/src/leveldb/libleveldb.a
+QMAKE_EXTRA_TARGETS += genleveldb
+# Gross ugly hack that depends on qmake internals, unfortunately there is no other way to do it.
+QMAKE_CLEAN += $$PWD/src/leveldb/libleveldb.a; cd $$PWD/src/leveldb ; $(MAKE) clean
 
 
 CONFIG(debug, debug|release) {
@@ -62,6 +93,11 @@ isEmpty(QMAKE_LRELEASE) {
     else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
 }
 
-LIBS += -lboost_system
+INCLUDEPATH += $$OPENSSL_INCLUDE_PATH
+LIBS += $$join(OPENSSL_LIB_PATH,,-L,)
+LIBS += -lssl -lcrypto
+
+
+LIBS += -lboost_system$$BOOST_LIB_SUFFIX
 
 system($$QMAKE_LRELEASE -silent $$_PRO_FILE_)
