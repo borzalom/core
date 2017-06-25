@@ -56,7 +56,13 @@ boost::property_tree::ptree XBridge::request( const std::string& json )
         char buf[1024];
         size_t bytes_transferred = sock.receive(boost::asio::buffer(buf), {}, ec);
         if (!ec) str_response.append(buf, buf + bytes_transferred);
-
+*/
+        char buf[16384]; // enough for two standard buffers
+        size_t bytes_transferred = sock.receive(boost::asio::buffer(buf), {}, ec);
+        if (!ec) { // no errors
+          str_response.reserve(str_response.size() + bytes_transferred); // make the string grow accordingly
+          str_response.append(buf, buf + bytes_transferred); // add the extra data
+        }
         std::stringstream resp(str_response);        
         std::string line;
 
