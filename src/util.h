@@ -58,6 +58,18 @@ public:
 };
 
 
+extern bool ConsoleLog;
 
+enum LogLevel
+{
+    LL_FATAL_ERROR,
+    LL_ERROR,
+    LL_WARNING,
+    LL_LOG
+};
+
+void LogPrint(LogLevel loglevel, const std::string &str);
+
+void ExceptionPrint(std::exception* e, const char* Thread);
 
 #endif // XBY_UTIL_H

@@ -7,6 +7,10 @@
 #include <cstdlib>
 #include <memory.h>
 #include <string>
+#include <sstream>
+#include <iostream>
+
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 const char* const HEX_CHARS = "0123456789ABCDEF";
 const char* const BASE64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -202,4 +206,58 @@ std::string Decoders::Base64_Decode(std::string const& encoded_string) {
   return ret;
 }
 
+//      LogPrint
+// ------------------------------------------------------------
+
+bool ConsoleLog = true;
+
+static std::string GetExceptionStr(std::exception* e, const char* ThreadName)
+{   
+    std::stringstream ss;
+
+    if (e) {
+       ss << "EXCEPTION: "  << typeid(*e).name() << std::endl << e->what();   
+    } else {
+       ss << "UNKNOWN EXCEPTION: "; 
+    }
+    ss << std::endl << " in " << ThreadName << std::endl;
+
+    return ss.str();        
+}
+
+std::string DateTimeStrFormat(const char* format, int64_t nTime)
+{
+    std::locale loc(std::locale::classic(), new boost::posix_time::time_facet(format));
+    std::stringstream ss;
+    ss.imbue(loc);
+    ss << boost::posix_time::from_time_t(nTime);
+    return ss.str();
+}
+
+void ExceptionPrint(std::exception* e, const char* Thread)
+{
+    std::string message = GetExceptionStr( e, Thread);
+    LogPrint(LL_FATAL_ERROR, message);
+    throw;
+}
+
+
+void LogPrint(LogLevel loglevel, const std::string &str) {
+	
+       if (ConsoleLog) {
+       	 switch (loglevel) {
+       	 	  case LL_FATAL_ERROR: std::cout << "FATAL ERROR"; break;
+              case LL_ERROR: std::cout << "ERROR"; break; 
+              case LL_WARNING: std::cout << "WARNNG";  break;
+              case LL_LOG: std::cout << "LOG";  break;
+       	 }
+       	 std::cout << ": " << DateTimeStrFormat("%Y-%m-%d %H:%M:%S", time(NULL));
+          std::cout << " " << str << std::endl;          
+       }  else  {
+       	  // FIXMEE !!!
+       }
+
+    
+
+}
 

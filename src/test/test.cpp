@@ -12,11 +12,12 @@
 #include "../crypto.h"
 #include "../redfat.h"
 #include "../vitals.h"
+#include "../threads.h"
 
 const char* TestDataBin = "The Proof of Signature Blockchain Revolution";
 const char* TestDataHex = "5468652050726F6F66206F66205369676E617475726520426C6F636B636861696E205265766F6C7574696F6E";
 const char* TestDataBase64 = "VGhlIFByb29mIG9mIFNpZ25hdHVyZSBCbG9ja2NoYWluIFJldm9sdXRpb24=";
-
+const char* EmptyStr = "";
 
 BOOST_AUTO_TEST_CASE( hexstring_test )
 {
@@ -40,12 +41,10 @@ BOOST_AUTO_TEST_CASE( hexstring_test )
 	*Test zero size
 	*/
 	
-	const char* TestBin = "";
-	const char* TestHex = "";
 	BOOST_TEST_MESSAGE("Zero test:");
 	BOOST_REQUIRE( hexstring.Allocate(0) == false);
-	BOOST_REQUIRE( hexstring.SetBin((char*)TestBin) == false);
-	BOOST_REQUIRE( hexstring.SetHex((char*)TestHex) == false);
+	BOOST_REQUIRE( hexstring.SetBin((char*)EmptyStr) == false);
+	BOOST_REQUIRE( hexstring.SetHex((char*)EmptyStr) == false);
 	BOOST_REQUIRE( hexstring.Wipe() == false);
 	BOOST_REQUIRE(strcmp(hexstring.toString().c_str(), "HexString is null") == 0);
 	
@@ -97,7 +96,15 @@ BOOST_AUTO_TEST_CASE( xbridge_test )
 {  
     boost::asio::io_service ios;
     XBridge xbridge( ios );
-    BOOST_REQUIRE( xbridge.connect( "localhost:34001", "xbyuser", "xbypass" ) == true );    
+    BOOST_REQUIRE( xbridge.connect( "localhost:34001", "xbyuser", "xbypass" ) == true );   
     BOOST_TEST_MESSAGE( "Blocks:" << xbridge.GetBlocks() );
+}
+
+BOOST_AUTO_TEST_CASE( log_test ) {
+   LogPrint(LOG,TestDataBin);
+}
+
+BOOST_AUTO_TEST_CASE( threads_test ) {
+   StartThreads();
 }
 

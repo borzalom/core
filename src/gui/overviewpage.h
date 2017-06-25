@@ -20,6 +20,8 @@ class OverviewPage : public QWidget
 public:
     explicit OverviewPage(QWidget *parent = 0);
     ~OverviewPage();
+    
+    void SetlabelAlerts(QString qs);
 
 private:
     Ui::OverviewPage *ui;

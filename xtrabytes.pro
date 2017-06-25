@@ -27,16 +27,21 @@ SOURCES +=   src/xtrabytes.cpp \
 	     src/gui/xtrabytesgui.cpp \
 	     src/gui/aboutdialog.cpp \
 	     src/gui/overviewpage.cpp \
+	     src/gui/models/m-xbridge.cpp \
 	     src/util.cpp \
+	     src/vitals.cpp \
 	     src/redfat.cpp \
 	     src/crypto.cpp \
 	     src/error.cpp \
+	     src/gui.cpp \
+	     src/threads.cpp \
 	     src/genesis.cpp \
 	     src/superchain.cpp \
 	     src/block.cpp
 
 HEADERS +=   src/gui/xtrabytesgui.h \
 	     src/gui/aboutdialog.h \
+	     src/gui/models/m-xbridge.h \
 	     src/gui/overviewpage.h
 
 FORMS +=     src/gui/forms/aboutdialog.ui \
@@ -61,7 +66,7 @@ LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
         QMAKE_RANLIB = $$replace(QMAKE_STRIP, strip, ranlib)
     }
     LIBS += -lshlwapi
-    #genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
+    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
 }
 genleveldb.target = $$PWD/src/leveldb/libleveldb.a
 genleveldb.depends = FORCE
@@ -86,7 +91,7 @@ UI_DIR = $$DESTDIR/.u
 
 # for lrelease/lupdate
 # also add new translations to src/qt/xtrabytes.qrc under translations/
-TRANSLATIONS = $$files(src/qt/locale/xtrabytes_*.ts)
+TRANSLATIONS = $$files(src/gui/locale/xtrabytes_*.ts)
 
 isEmpty(QMAKE_LRELEASE) {
     win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
@@ -98,6 +103,6 @@ LIBS += $$join(OPENSSL_LIB_PATH,,-L,)
 LIBS += -lssl -lcrypto
 
 
-LIBS += -lboost_system$$BOOST_LIB_SUFFIX
+LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
 
 system($$QMAKE_LRELEASE -silent $$_PRO_FILE_)

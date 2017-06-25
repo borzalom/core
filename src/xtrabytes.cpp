@@ -13,7 +13,9 @@
 
 #include "xtrabytes.h"
 #include "genesis.h"
+#include "threads.h"
 #include "gui/xtrabytesgui.h"
+#include "gui/models/m-xbridge.h"
 
 using namespace std;
 using namespace boost;
@@ -49,9 +51,15 @@ int main(int argc, char **argv)
   } else {
   	
 	  QApplication app (argc, argv);
+      XtraBYtesGUI xtrabytesGUI;
+     
+      XBridgeModel xbridgemodel;      
+     
+      xtrabytesGUI.setXBridgeModel(&xbridgemodel);	  
 	  
-	  XtraBYtesGUI xtrabytesGUI;
+
 	  xtrabytesGUI.show();
+	  StartThreads();
 	  return app.exec();  
   
   }  
