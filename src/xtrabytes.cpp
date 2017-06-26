@@ -103,7 +103,18 @@ void ParseCommandLine(int argc, const char* const argv[])
    SettingsMutex.unlock(); 
 }
 
-// FIXMEE!! TMP FUNCTIONS
+// FIXED - onedeveloper/nitroxido
+
+std::string GetSettingsStringValue(std::string id ) {
+  std:string result; // the result
+  try {
+    result = SettingsMap.at(id); // try to find the id in the map
+  }
+  catch (const std::out_of_range& oor) {
+    result = ""; // not found, use standard value
+  }
+  return result; // always return something
+}
 
 std::string GetSettingsStringValue(std::string id ) {
   BOOST_FOREACH(std::string str, SettingsMap[id]) {
