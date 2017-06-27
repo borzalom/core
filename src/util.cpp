@@ -244,20 +244,15 @@ void ExceptionPrint(std::exception* e, const char* Thread)
 
 void LogPrint(LogLevel loglevel, const std::string &str) {
 	
-       if (ConsoleLog) {
-       	 switch (loglevel) {
-       	 	  case LL_FATAL_ERROR: std::cout << "FATAL ERROR"; break;
-              case LL_ERROR: std::cout << "ERROR"; break; 
-              case LL_WARNING: std::cout << "WARNNG";  break;
-              case LL_LOG: std::cout << "LOG";  break;
-       	 }
-       	 std::cout << ": " << DateTimeStrFormat("%Y-%m-%d %H:%M:%S", time(NULL));
-          std::cout << " " << str << std::endl;          
-       }  else  {
-       	  // FIXMEE !!!
-       }
+    if (!ConsoleLog) return;
 
-    
+    switch (loglevel) {
+        case LL_FATAL_ERROR: std::cout << "FATAL ERROR"; break;
+        case LL_ERROR: std::cout << "ERROR"; break; 
+        case LL_WARNING: std::cout << "WARNNG";  break;
+        case LL_LOG: std::cout << "LOG";  break;
+    }
 
+    std::cout << ": " << DateTimeStrFormat("%Y-%m-%d %H:%M:%S", time(NULL));
+    std::cout << " " << str << std::endl;          
 }
-
