@@ -209,7 +209,7 @@ std::string Decoders::Base64_Decode(std::string const& encoded_string) {
 //      LogPrint
 // ------------------------------------------------------------
 
-bool ConsoleLog = true;
+bool WriteConsoleLog = true;
 
 static std::string GetExceptionStr(std::exception* e, const char* ThreadName)
 {   
@@ -244,7 +244,7 @@ void ExceptionPrint(std::exception* e, const char* Thread)
 
 void LogPrint(LogLevel loglevel, const std::string &str) {
 	
-    if (!ConsoleLog) return;
+    if (!WriteConsoleLog) return;
 
     switch (loglevel) {
         case LL_FATAL_ERROR: std::cout << "FATAL ERROR"; break;
