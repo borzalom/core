@@ -13,6 +13,7 @@
 #include "xtrabytesgui.h"
 #include "aboutdialog.h"
 #include "overviewpage.h"
+#include "../gui.h"
 
 XtraBYtesGUI::XtraBYtesGUI(QWidget *parent):
     QMainWindow(parent)
@@ -40,6 +41,7 @@ XtraBYtesGUI::XtraBYtesGUI(QWidget *parent):
     setUnifiedTitleAndToolBarOnMac(true);
 
     overviewPage = new OverviewPage();
+    gui.initOverviewPage( overviewPage );
     
     centralStackedWidget = new QStackedWidget(this);
     centralStackedWidget->addWidget(overviewPage);
@@ -144,4 +146,9 @@ void XtraBYtesGUI::gotoOverviewPage()
 }
 
 
+void XtraBYtesGUI::setXBridgeModel(XBridgeModel *model)
+{
+    this->xbridgemodel = model;
+    if(model) {}
+}    
 

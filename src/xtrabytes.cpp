@@ -13,7 +13,9 @@
 
 #include "xtrabytes.h"
 #include "genesis.h"
+#include "threads.h"
 #include "gui/xtrabytesgui.h"
+#include "gui/models/m-xbridge.h"
 
 using namespace std;
 using namespace boost;
@@ -49,9 +51,15 @@ int main(int argc, char **argv)
   } else {
   	
 	  QApplication app (argc, argv);
+      XtraBYtesGUI xtrabytesGUI;
+     
+      XBridgeModel xbridgemodel;      
+     
+      xtrabytesGUI.setXBridgeModel(&xbridgemodel);	  
 	  
-	  XtraBYtesGUI xtrabytesGUI;
+
 	  xtrabytesGUI.show();
+	  StartThreads();
 	  return app.exec();  
   
   }  
@@ -95,7 +103,18 @@ void ParseCommandLine(int argc, const char* const argv[])
    SettingsMutex.unlock(); 
 }
 
-// FIXMEE!! TMP FUNCTIONS
+// FIXED - onedeveloper/nitroxido
+
+std::string GetSettingsStringValue(std::string id ) {
+  std:string result; // the result
+  try {
+    result = SettingsMap.at(id); // try to find the id in the map
+  }
+  catch (const std::out_of_range& oor) {
+    result = ""; // not found, use standard value
+  }
+  return result; // always return something
+}
 
 std::string GetSettingsStringValue(std::string id ) {
   BOOST_FOREACH(std::string str, SettingsMap[id]) {

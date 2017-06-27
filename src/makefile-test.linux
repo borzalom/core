@@ -1,0 +1,70 @@
+## XtraBYtes - The Proof of Signature Blocktech Superchain - http://xtrabytes.global
+## Copyright (c) 2017, Zoltan Szabo. All rights reserved.
+## Copyright (c) 2017, XtraBYtes Founders and Developers ( see AUTHORS )
+## Licensed under GNU General Public License Version 3 or later (the "GPL")
+
+LINK:=$(CXX)
+ARCH:=$(system lscpu | head -n 1 | awk '{print $2}')
+
+MKDIR_P := mkdir -p
+OBJ_DIR := obj
+OBJ_DIR_TEST := obj/test
+
+DEFS += $(addprefix -I,$(CURDIR) $(CURDIR)/obj $(BOOST_INCLUDE_PATH))
+LIBS = $(addprefix -L,$(BOOST_LIB_PATH))
+
+LIBS += \
+ -Wl,-Bstatic \
+   -L boost_system \
+   -L boost_filesystem \
+   -L boost_program_options \
+   -L boost_thread 
+
+LIBS+= \
+ -Wl,-Bdynamic \
+   -l ssl \
+   -l crypto \
+   -l pthread
+
+
+OBJS= \
+    leveldb/libleveldb.a \
+    obj/util.o \
+    obj/crypto.o \
+    obj/error.o \
+    obj/redfat.o \
+    obj/threads.o \
+    obj/vitals.o \
+    obj/test/test.o 
+
+all: xtrabytes-test 
+
+LIBS += $(CURDIR)/leveldb/libleveldb.a $(CURDIR)/leveldb/libmemenv.a
+DEFS += $(addprefix -I,$(CURDIR)/leveldb/include)
+DEFS += $(addprefix -I,$(CURDIR)/leveldb/helpers)
+leveldb/libleveldb.a:
+	@echo "Building LevelDB ..."; cd leveldb; make libleveldb.a libmemenv.a; cd ..;
+
+-include obj/*.P
+-include obj/test/*.P
+
+
+obj/%.o: %.cpp | obj
+	$(CXX) -c $(xCXXFLAGS) -MMD -MF $(@:%.o=%.d) -o $@ $<
+	@cp $(@:%.o=%.d) $(@:%.o=%.P); \
+	sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+	-e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
+	rm -f $(@:%.o=%.d)
+
+obj:
+	@${MKDIR_P} $(OBJ_DIR)
+	@${MKDIR_P} $(OBJ_DIR_TEST)
+
+xtrabytes-test: $(OBJS:obj/%=obj/%)
+	$(LINK) $(xCXXFLAGS) -o $@ $^ $(LIBS)
+
+
+
+clean:
+	rm -f xtrabytes-test
+	rm -rf $(OBJ_DIR)

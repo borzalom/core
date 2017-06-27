@@ -11,6 +11,7 @@
 
 #include "aboutdialog.h"
 #include "overviewpage.h"
+#include "gui/models/m-xbridge.h"
 
 class QAction;
 class QMenu;
@@ -27,6 +28,8 @@ public:
     explicit XtraBYtesGUI(QWidget *parent = 0);
     ~XtraBYtesGUI();
 
+    void setXBridgeModel(XBridgeModel *model);
+
 private:
     
     QToolBar *toolbar;
@@ -34,6 +37,8 @@ private:
     QStackedWidget *centralStackedWidget;
 
     OverviewPage *overviewPage;
+    
+    XBridgeModel *xbridgemodel;
 
     void createMenus();
     void createStatusBar();

@@ -6,5 +6,12 @@
 #ifndef XBY_THREADS_H
 #define XBY_THREADS_H
 
+void StartThreads();
+
+template <typename Callable>
+void ThreadWrapper(std::string ThreadName, Callable ThreadFunc);
+
+void ThreadSyncXbridge();
+
 
 #endif // XBY_THREADS_H

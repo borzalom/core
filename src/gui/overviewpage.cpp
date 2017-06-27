@@ -19,3 +19,8 @@ OverviewPage::~OverviewPage()
     delete ui;
 }
 
+void OverviewPage::SetlabelAlerts(QString qs) {
+   ui->labelAlerts->setText(qs);
+}
+
+

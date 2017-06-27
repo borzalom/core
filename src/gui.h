@@ -6,5 +6,20 @@
 #ifndef XBY_GUI_H
 #define XBY_GUI_H
 
+#include "xtrabytesgui.h"
+#include "overviewpage.h"
+
+class GUI {
+   public:
+     void displayNumConnections(int i);
+     void displayText(std::string text);
+     void initOverviewPage(OverviewPage *op );
+   private:
+     OverviewPage *overviewPage;    
+     XBridgeModel *xbridgemodel;
+
+};
+
+extern GUI gui;
 
 #endif // XBY_GUI_H
