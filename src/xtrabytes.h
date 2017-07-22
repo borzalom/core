@@ -6,7 +6,11 @@
 #ifndef XBY_XTRABYTES_H
 #define XBY_XTRABYTES_H
 
+#include "gui/xtrabytesgui.h"
+
 void ParseCommandLine(int argc, const char* const argv[]);
 std::string GetSettingsStringValue(std::string id );
+
+extern XtraBYtesGUI *xGUI;
 
 #endif // XBY_XTRABYTES_H

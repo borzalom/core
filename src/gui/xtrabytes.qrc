@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/icons">
         <file alias="dashboard">resources/icons/dashboard.png</file>
+        <file alias="modules">resources/icons/modules.png</file>
         <file alias="about">resources/icons/about.png</file>
         <file alias="exit">resources/icons/exit.png</file>
         <file alias="xtrabytes">resources/icons/xtrabytes.png</file>

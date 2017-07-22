@@ -19,13 +19,14 @@ class OverviewPage : public QWidget
 
 public:
     explicit OverviewPage(QWidget *parent = 0);
-    ~OverviewPage();
-    
-    void SetlabelAlerts(QString qs);
+    ~OverviewPage();    
 
 private:
     Ui::OverviewPage *ui;
-
+    
+public slots:    
+    void UpdateOverviewPageContent();
+    
 };
 
 #endif // OVERVIEWPAGE_H

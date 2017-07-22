@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ModulesPage</class>
+ <widget class="QWidget" name="ModulesPage">
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+   <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QWidget" name="mainWidget">
+     <property name="visible">
+      <bool>true</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop:0 #CCCCCC, stop:1 #FFFFFF);  color:#000000</string>
+     </property>
+     <layout class="QVBoxLayout" name="contentLayout">
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

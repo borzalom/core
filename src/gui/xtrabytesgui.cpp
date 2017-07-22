@@ -13,6 +13,8 @@
 #include "xtrabytesgui.h"
 #include "aboutdialog.h"
 #include "overviewpage.h"
+#include "modulespage.h"
+#include "models/guimodel.h"
 #include "../gui.h"
 
 XtraBYtesGUI::XtraBYtesGUI(QWidget *parent):
@@ -41,10 +43,15 @@ XtraBYtesGUI::XtraBYtesGUI(QWidget *parent):
     setUnifiedTitleAndToolBarOnMac(true);
 
     overviewPage = new OverviewPage();
-    gui.initOverviewPage( overviewPage );
+    modulesPage = new ModulesPage();
+    
+    guimodel = new GuiModel();
+    guimodel->init( overviewPage, modulesPage );
+        
     
     centralStackedWidget = new QStackedWidget(this);
     centralStackedWidget->addWidget(overviewPage);
+    centralStackedWidget->addWidget(modulesPage);
 
     QWidget *centralWidget = new QWidget();
     QVBoxLayout *centralLayout = new QVBoxLayout(centralWidget);
@@ -74,6 +81,14 @@ void XtraBYtesGUI::createActions() {
     overviewAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
     tabGroup->addAction(overviewAction);    
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(gotoOverviewPage()));
+
+    modulesAction = new QAction(QIcon(":/icons/modules"), tr("&Modules"), this);
+    modulesAction->setToolTip(tr("Show general overview of modules."));
+    modulesAction->setCheckable(true);
+    modulesAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
+    tabGroup->addAction(modulesAction);    
+    connect(modulesAction, SIGNAL(triggered()), this, SLOT(gotoModulesPage()));
+
     
     exitAction = new QAction( QIcon(":/icons/exit"), tr("E&xit"), this );
     exitAction->setShortcut( tr("Ctrl+Q") );
@@ -116,6 +131,7 @@ void XtraBYtesGUI::createToolBars()
     toolbar->addWidget(l);
     
     toolbar->addAction(overviewAction);
+    toolbar->addAction(modulesAction);
     toolbar->addAction(aboutAction);
     toolbar->addAction(exitAction);    
     toolbar->addWidget(makeToolBarSpacer());
@@ -146,9 +162,10 @@ void XtraBYtesGUI::gotoOverviewPage()
 }
 
 
-void XtraBYtesGUI::setXBridgeModel(XBridgeModel *model)
+void XtraBYtesGUI::gotoModulesPage()
 {
-    this->xbridgemodel = model;
-    if(model) {}
-}    
+    centralStackedWidget->setCurrentWidget(modulesPage);
+}
+
+
 

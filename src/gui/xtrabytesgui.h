@@ -8,10 +8,14 @@
 
 #include <QMainWindow>
 #include <QStackedWidget>
+#include <QObject>
+
+#include <boost/foreach.hpp>
 
 #include "aboutdialog.h"
 #include "overviewpage.h"
-#include "gui/models/m-xbridge.h"
+#include "modulespage.h"
+#include "gui/models/guimodel.h"
 
 class QAction;
 class QMenu;
@@ -27,8 +31,7 @@ class XtraBYtesGUI : public QMainWindow
 public:
     explicit XtraBYtesGUI(QWidget *parent = 0);
     ~XtraBYtesGUI();
-
-    void setXBridgeModel(XBridgeModel *model);
+    GuiModel *guimodel;
 
 private:
     
@@ -37,8 +40,7 @@ private:
     QStackedWidget *centralStackedWidget;
 
     OverviewPage *overviewPage;
-    
-    XBridgeModel *xbridgemodel;
+    ModulesPage *modulesPage;        
 
     void createMenus();
     void createStatusBar();
@@ -47,12 +49,14 @@ private:
     
     QAction *aboutAction;
     QAction *overviewAction;
+    QAction *modulesAction;
     QAction *exitAction;
 
 private slots:    
     
     void aboutClicked();
     void gotoOverviewPage();
+    void gotoModulesPage();
 
     
 };

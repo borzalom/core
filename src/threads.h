@@ -12,6 +12,8 @@ template <typename Callable>
 void ThreadWrapper(std::string ThreadName, Callable ThreadFunc);
 
 void ThreadSyncXbridge();
-
+void ThreadServerDICOM();
+void ThreadModuleHeartBeat();
+void ThreadCron_1s();
 
 #endif // XBY_THREADS_H

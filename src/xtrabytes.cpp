@@ -14,57 +14,29 @@
 #include "xtrabytes.h"
 #include "genesis.h"
 #include "threads.h"
-#include "gui/xtrabytesgui.h"
-#include "gui/models/m-xbridge.h"
+#include "dicom.h"
+#include "gui/models/guimodel.h"
 
 using namespace std;
 using namespace boost;
   
 boost::mutex SettingsMutex;
 std::map<std::string, std::vector<std::string> > SettingsMap;    
+XtraBYtesGUI *xGUI;
 
 int main(int argc, char **argv)
 {
-    
-  ParseCommandLine( argc , argv );  
-
-  if ( SettingsMap["nogui"].size() > 0 || SettingsMap["help"].size() > 0 ) {
-    std::cout << std::endl << "Welcome to XtraBYtes command line mode." << std::endl;
-
-    if ( SettingsMap["help"].size() > 0 ) {
-       std::cout << std::endl << "Commands:" << std::endl;
-       std::cout << "help" << std::endl;
-       std::cout << "getstaticbyid" << std::endl;
-       std::cout << "getstaticbypubkey" << std::endl << std::endl;
-    }
-    
-    if ( GetSettingsStringValue("getstaticbyid").size() > 0 ) {
-    	  
-        std::cout << std::endl << Genesis_Block::GetSTaTiCbyID(GetSettingsStringValue("getstaticbyid").c_str()) << std::endl;
-    }
-
-    if ( GetSettingsStringValue("getstaticbypubkey").size() > 0 ) {
-    	  
-        std::cout << std::endl << Genesis_Block::GetSTaTiCbyPubKey(GetSettingsStringValue("getstaticbypubkey").c_str()) << std::endl;
-    }
-
-  } else {
-  	
+      	
 	  QApplication app (argc, argv);
-      XtraBYtesGUI xtrabytesGUI;
-     
-      XBridgeModel xbridgemodel;      
-     
-      xtrabytesGUI.setXBridgeModel(&xbridgemodel);	  
-	  
 
+     XtraBYtesGUI xtrabytesGUI;     	  
 	  xtrabytesGUI.show();
+	  xGUI = &xtrabytesGUI;
 	  StartThreads();
+	  
 	  return app.exec();  
   
-  }  
-    	
-  return 1;  	
+   	
 }
 
 void ParseCommandLine(int argc, const char* const argv[])
@@ -103,18 +75,7 @@ void ParseCommandLine(int argc, const char* const argv[])
    SettingsMutex.unlock(); 
 }
 
-// FIXED - onedeveloper/nitroxido
-
-std::string GetSettingsStringValue(std::string id ) {
-  std:string result; // the result
-  try {
-    result = SettingsMap.at(id); // try to find the id in the map
-  }
-  catch (const std::out_of_range& oor) {
-    result = ""; // not found, use standard value
-  }
-  return result; // always return something
-}
+// FIXMEE!! TMP FUNCTIONS
 
 std::string GetSettingsStringValue(std::string id ) {
   BOOST_FOREACH(std::string str, SettingsMap[id]) {

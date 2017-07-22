@@ -27,10 +27,13 @@ SOURCES +=   src/xtrabytes.cpp \
 	     src/gui/xtrabytesgui.cpp \
 	     src/gui/aboutdialog.cpp \
 	     src/gui/overviewpage.cpp \
-	     src/gui/models/m-xbridge.cpp \
+	     src/gui/modulespage.cpp \
+	     src/gui/models/guimodel.cpp \
 	     src/util.cpp \
 	     src/vitals.cpp \
 	     src/redfat.cpp \
+	     src/dicom.cpp \
+	     src/modules.cpp \
 	     src/crypto.cpp \
 	     src/error.cpp \
 	     src/gui.cpp \
@@ -41,11 +44,13 @@ SOURCES +=   src/xtrabytes.cpp \
 
 HEADERS +=   src/gui/xtrabytesgui.h \
 	     src/gui/aboutdialog.h \
-	     src/gui/models/m-xbridge.h \
-	     src/gui/overviewpage.h
+	     src/gui/models/guimodel.h \
+	     src/gui/overviewpage.h \
+	     src/gui/modulespage.h
 
 FORMS +=     src/gui/forms/aboutdialog.ui \
-	     src/gui/forms/overviewpage.ui
+	     src/gui/forms/overviewpage.ui \
+	     src/gui/forms/modulespage.ui
 
 RESOURCES += src/gui/xtrabytes.qrc
 
@@ -102,6 +107,9 @@ INCLUDEPATH += $$OPENSSL_INCLUDE_PATH
 LIBS += $$join(OPENSSL_LIB_PATH,,-L,)
 LIBS += -lssl -lcrypto
 
+win32 {
+  LIBS += -lwsock32
+}
 
 LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
 

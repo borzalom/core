@@ -33,6 +33,7 @@ OBJS= \
     obj/crypto.o \
     obj/error.o \
     obj/redfat.o \
+    obj/dicom.o \
     obj/threads.o \
     obj/vitals.o \
     obj/test/test.o 
